@@ -1,0 +1,119 @@
+﻿@page "/KoutOfN"
+
+<PageTitle>KoutOfN</PageTitle>
+<style>
+    h1 {
+        color: red;
+        font-style: italic;
+        text-shadow: 2px 2px 2px gray;
+    }
+
+    label{
+        font-family:'Times New Roman', Times, serif;
+        margin-bottom: 10px ;
+        font-size : 20px;
+    }
+
+    input {
+        padding: 5px; 
+        border: 1px solid #ccc; 
+        border-radius: 3px; 
+        margin-bottom: 10px;
+    }
+    .frame{
+        padding: 20px; 
+        background-color: #f2f2f2;
+        border-radius: 5px;
+    }
+
+    button{
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+</style>
+
+
+<h1>K-out-of-N</h1>
+<div class="d-flex flex-column justify-content-center shadow-lg" style="width : 50vh">
+    <div class="d-flex flex-column justify-content-center frame">
+        <label for="numComp">Number of Components:</label>
+        <input @bind="n" name="numComp" id="numComp" /><br />
+
+        <label for="req">Required components:</label>
+        <input @bind="k" name="req" id="req" /><br />
+
+        <label for="rel">Component Reliability:</label>
+        <input @bind="p" name="rel" id="rel" /><br />
+
+        <p role="status" style="font-weight: bold;">System Reliability: @reliability1</p>
+
+        <button class="btn btn-primary" @onclick="Algorithm1">Compute Reliability</button>
+    </div>
+
+</div>
+
+@code {
+    private double p = 0.5; // component reliability
+    private int n = 3;
+    private int k = 2;
+    private double reliability1 = 0.5;
+    private double reliability4 = 0.5;
+
+    /// <summary>
+    /// Inuts
+    ///     p : reliability
+    ///     n : number of components
+    ///     k : required components
+    ///     q = 1-p calculated
+    /// </summary>
+    /// <param name="p"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
+    private void Algorithm1()
+    {
+        double q = 1 - p;
+        double x = Math.Pow(p, n);
+        double Rel = x;
+        double y = q / p;
+
+        for (int i = 1; i <= (n - k); i++)
+        {
+            x = x * y * (n - i + 1) / i;
+            Rel += x;
+        }
+
+        reliability1 = Rel;
+    }
+
+    /// <summary>
+    /// Inuts
+    ///     a : availability
+    ///     n : number of components
+    ///     k : required components
+    ///     u = 1-a calculated
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
+    static double Algorithm4(double a, int n, int k)
+    {
+        double u = 1 - a;
+        double x = Math.Pow(a, n);
+        double Avail = x;
+        double y = u / a;
+
+        for (int i = 1; i <= (n - k); i++)
+        {
+            x = x * y * (n - i + 1) / i;
+            Avail += x;
+        }
+
+        return Avail;
+    }
+}

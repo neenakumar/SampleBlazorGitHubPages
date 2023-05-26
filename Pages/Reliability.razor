@@ -1,0 +1,28 @@
+﻿@page "/reliability"
+
+<PageTitle>Reliability</PageTitle>
+<link href="css/reliability.css" rel="stylesheet">
+
+<div class="bg-container">
+    <div class="card-container">
+        <h1 class="heading">Probability</h1>
+
+        <label class="input1" for="rel">Component Reliability: </label>
+        <input @bind="compProb" name="rel" id="rel" /> <br />
+        <p class="input1" role="status">System Reliability: <span class="result">@reliability</span></p>
+
+        <button class="btn btn-primary" @onclick="ComputeReliability">Compute Reliability</button>
+    </div>
+</div>
+
+
+@code {
+    private double reliability = 0;    
+    private int numComponents = 2;
+    private double compProb = 0.9;
+
+    private void ComputeReliability()
+    {
+        reliability = Math.Pow(compProb, numComponents);
+    }
+}
